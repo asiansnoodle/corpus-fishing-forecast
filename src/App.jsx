@@ -96,6 +96,18 @@ export default function App() {
       {selectedDay && (
         <DayDetail day={selectedDay} onClose={() => setSelectedDayKey(null)} />
       )}
+
+      <footer className="text-center py-6 text-white/20 text-xs">
+        Built by{' '}
+        <a
+          href="https://github.com/asiansnoodle"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-white/50 transition-colors underline underline-offset-2"
+        >
+          asiansnoodle
+        </a>
+      </footer>
     </div>
   )
 }
