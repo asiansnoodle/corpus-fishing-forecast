@@ -282,14 +282,18 @@ export function computeFullScore({ windowEvents, dayKey, moonPhase, moonFraction
  *
  * @returns {{ score, stars, label, isPartial, breakdown }}
  */
+// Uncertainty discount applied to all partial scores.
+// Weather (wind, rain, temp) accounts for 45% of a full score and can only
+// hurt — bad weather never helps. Since we have no weather data beyond 16 days,
+// we discount partial scores to reflect that unknown downside risk.
+const PARTIAL_UNCERTAINTY_DISCOUNT = 0.90
+
 export function computePartialScore({ windowEvents, dayKey, moonPhase, moonFraction, moonrise }) {
   const tideScore = scoreTide(windowEvents, dayKey)
   const moonScore = scoreMoon(moonPhase, moonFraction, moonrise)
 
-  const score = Math.round(
-    tideScore * 0.55 +
-    moonScore * 0.45
-  )
+  const rawScore = tideScore * 0.55 + moonScore * 0.45
+  const score    = Math.round(rawScore * PARTIAL_UNCERTAINTY_DISCOUNT)
 
   return {
     score,
